@@ -29,7 +29,7 @@ We must containize using `Docker` each part seperately to make it more modular a
 ### 1. Create environment & Upgrade pip tools
 
 ```bash
-conda create -n ekyc python=3.11
+conda create -n ekyc python=3.11.16
 conda activate ekyc
 
 python -m pip install --upgrade pip wheel
@@ -39,27 +39,41 @@ pip install "setuptools<81"
 ### 2. Install NumPy & OpenCV & dlib for Windows & face recognition
 
 ```bash
-pip install numpy==1.26.4
-pip install opencv-python-headless==4.10.0.84
-pip install dlib-bin==20.0.1
-pip install face_recognition_models==0.3.0
+pip install numpy==2.4.6 dlib-bin==20.0.1 face_recognition_models==0.3.0 easyocr==1.7.2 mysql-connector-python==26.7.0 pandas==3.0.6 pillow==12.3.0 SQLAlchemy==2.1.1 streamlit==1.64.0 deepface==0.0.101 tf_keras==2.21.0
 pip install face_recognition==1.3.0 --no-deps
 ```
-
-> 1. Do not install `opencv-python` together with `opencv-python-headless`.
-> 2. Do not install the normal `dlib` package.
-> 3. `face_recognition` is installed with `--no-deps` because it tries to install/build normal `dlib`.
 
 ### 3. Install remaining packages & Verify
 
 ```bash
-pip install easyocr==1.7.2 mysql-connector-python==26.7.0 pandas==3.0.6 pillow==12.3.0 SQLAlchemy==2.1.1 streamlit==1.64.0
+pip uninstall opencv-python opencv-python-headless -y
+pip install opencv-python-headless==4.10.0.84
+```
+> 1. Do not install `opencv-python` together with `opencv-python-headless`.
+> 2. Do not install the normal `dlib` package.
+> 3. `face_recognition` is installed with `--no-deps` because it tries to install/build normal `dlib`.
 
-python -c "import cv2, streamlit, sqlalchemy, numpy, pandas, easyocr, mysql.connector, face_recognition; print('ALL OK')"
+### 4. Created a database and table in MySQL
+```sql
+CREATE DATABASE ekyc;
+
+USE ekyc;
+
+CREATE TABLE users (
+    id VARCHAR(255) NOT NULL PRIMARY KEY,
+    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
+    name VARCHAR(255),
+    father_name VARCHAR(255),
+    dob DATETIME,
+    id_type VARCHAR(255) NOT NULL,
+    embedding BLOB
+);
+
+SHOW TABLES;
 ```
 
-### 4. Run the Streamlit App
-> Make sure SQL server is running and the database is created by the name "ekyc" before running the app.
+### 5. Run the Streamlit App
+> Make sure SQL server is running before running the streamlit app
 ```bash
 streamlit run app.py
 ```
