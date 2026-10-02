@@ -1,8 +1,19 @@
 artifacts:
   FACERECOG_MODEL: deepface
-  HAARCASCADE_PATH: "data\\models\\haarcascade_frontalface_default.xml"
-  INTERMIDEIATE_DIR: "data\\02_intermediate_data"
+  HAARCASCADE_PATH: "models\\haarcascade_frontalface_default.xml"
+  INTERMIDEIATE_DIR: "data\\intermediate"
   CONTOUR_FILE: "contour_id.jpg"
-  FACE_IMG1: "data\\02_intermediate_data\\extracted_face.jpg"
-  FACE_IMG2: "data\\02_intermediate_data\\face_image.jpg"
-
+  FACE_IMG1_NAME: "extracted_face.jpg"
+  FACE_IMG1: "data\\intermediate\\extracted_face.jpg"
+  FACE_IMG2_NAME: "face_image.jpg"
+  FACE_IMG2: "data\\intermediate\\face_image.jpg"
+  LOG_FILE_NAME: "ekyc_logs.log"
+  LOG_DIR: "logs"
+parameters:
+  GAUSSIAN_BLUR_KERNEL_SIZE: 5
+  ADAPTIVE_THRESHOLD_BLOCK_SIZE: 11
+  ADAPTIVE_THRESHOLD_C: 2
+  SCALE_FACTOR: 1.1
+  MIN_NEIGHBORS: 5
+  INCREASED_SCALE_FACTOR: 1.50
+  DEEPFACE_MODEL: "Facenet"

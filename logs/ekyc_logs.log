@@ -1,0 +1,126 @@
+[2026-10-01 22:38:57,614: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-01 22:41:32,534: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-01 22:41:34,053: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-01 22:42:51,117: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-01 22:42:52,660: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-01 22:42:53,114: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:50:38,559: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:50:41,309: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:50:42,364: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:50:42,408: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:50:58,982: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:50:59,881: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:56:17,409: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:56:35,258: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:56:37,466: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:56:38,269: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:56:38,301: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:56:44,277: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:56:44,659: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:58:07,346: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:58:09,599: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:58:10,301: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:58:10,327: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:58:15,313: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:58:16,159: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:58:16,280: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 00:58:16,282: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 00:58:16,295: INFO: app]: ID card type selected: PAN
+[2026-10-02 00:58:16,297: INFO: app]: Header set for PAN Card registration.
+[2026-10-02 00:58:57,763: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:58:57,769: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 00:58:57,771: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 00:58:57,775: INFO: app]: ID card type selected: PAN
+[2026-10-02 00:58:57,777: INFO: app]: Header set for PAN Card registration.
+[2026-10-02 00:58:57,781: INFO: preprocess]: Error reading image: 'NoneType' object has no attribute 'read'
+[2026-10-02 00:58:57,783: INFO: app]: Face image loaded.
+[2026-10-02 00:58:57,787: ERROR: app]: No face image uploaded.
+[2026-10-02 00:59:08,403: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 00:59:08,406: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 00:59:08,407: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 00:59:08,411: INFO: app]: ID card type selected: PAN
+[2026-10-02 00:59:08,413: INFO: app]: Header set for PAN Card registration.
+[2026-10-02 00:59:08,432: INFO: app]: Face image loaded.
+[2026-10-02 00:59:08,446: INFO: app]: ID card image loaded.
+[2026-10-02 00:59:08,480: INFO: preprocess]: contours are found at, (247, 129, 609, 390)
+[2026-10-02 00:59:08,480: INFO: utils]: File doesn't exist for A:\CODES\PROJECTS\eKYC\data\intermediate\contour_id.jpg
+[2026-10-02 00:59:08,482: INFO: preprocess]: Image saved successfully: A:\CODES\PROJECTS\eKYC\data\intermediate\contour_id.jpg
+[2026-10-02 00:59:08,483: INFO: app]: ID card ROI extracted.
+[2026-10-02 01:00:11,411: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:11,419: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:11,445: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:11,501: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:11,507: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:11,511: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:11,514: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 01:00:11,515: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 01:00:11,519: INFO: app]: ID card type selected: PAN
+[2026-10-02 01:00:11,520: INFO: app]: Header set for PAN Card registration.
+[2026-10-02 01:00:11,524: INFO: app]: Face image loaded.
+[2026-10-02 01:00:11,535: INFO: app]: ID card image loaded.
+[2026-10-02 01:00:11,543: INFO: preprocess]: contours are found at, (247, 129, 609, 390)
+[2026-10-02 01:00:11,543: INFO: utils]: File doesn't exist for A:\CODES\PROJECTS\eKYC\data\intermediate\contour_id.jpg
+[2026-10-02 01:00:11,543: INFO: preprocess]: Image saved successfully: A:\CODES\PROJECTS\eKYC\data\intermediate\contour_id.jpg
+[2026-10-02 01:00:11,543: INFO: app]: ID card ROI extracted.
+[2026-10-02 01:00:11,690: INFO: utils]: File doesn't exist for A:\CODES\PROJECTS\eKYC\data\intermediate\extracted_face.jpg
+[2026-10-02 01:00:11,690: INFO: preprocess]: Image saved successfully: A:\CODES\PROJECTS\eKYC\data\intermediate\extracted_face.jpg
+[2026-10-02 01:00:11,692: INFO: utils]: File doesn't exist for data\intermediate\face_image.jpg
+[2026-10-02 01:00:11,692: INFO: preprocess]: Image saved successfully: data\intermediate\face_image.jpg
+[2026-10-02 01:00:11,692: INFO: app]: Faces extracted and saved.
+[2026-10-02 01:00:11,692: INFO: utils]: File doesn't exist for A:\CODES\PROJECTS\eKYC\data\intermediate\extracted_face.jpg
+[2026-10-02 01:00:11,692: INFO: utils]: File doesn't exist for data\intermediate\face_image.jpg
+[2026-10-02 01:00:29,293: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:31,472: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:32,161: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:32,187: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:36,884: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:37,209: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:37,244: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 01:00:37,245: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 01:00:37,249: INFO: app]: ID card type selected: PAN
+[2026-10-02 01:00:37,250: INFO: app]: Header set for PAN Card registration.
+[2026-10-02 01:00:48,223: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:48,228: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 01:00:48,230: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 01:00:48,233: INFO: app]: ID card type selected: PAN
+[2026-10-02 01:00:48,235: INFO: app]: Header set for PAN Card registration.
+[2026-10-02 01:00:48,238: INFO: preprocess]: Error reading image: 'NoneType' object has no attribute 'read'
+[2026-10-02 01:00:48,238: INFO: app]: Face image loaded.
+[2026-10-02 01:00:48,240: ERROR: app]: No face image uploaded.
+[2026-10-02 01:00:55,947: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 01:00:55,953: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 01:00:55,954: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 01:00:55,961: INFO: app]: ID card type selected: PAN
+[2026-10-02 01:00:55,963: INFO: app]: Header set for PAN Card registration.
+[2026-10-02 01:00:55,967: INFO: app]: Face image loaded.
+[2026-10-02 01:00:55,999: INFO: app]: ID card image loaded.
+[2026-10-02 01:00:56,018: INFO: preprocess]: contours are found at, (247, 129, 609, 390)
+[2026-10-02 01:00:56,018: INFO: utils]: File doesn't exist for A:\CODES\PROJECTS\eKYC\data\intermediate\contour_id.jpg
+[2026-10-02 01:00:56,018: INFO: preprocess]: Image saved successfully: A:\CODES\PROJECTS\eKYC\data\intermediate\contour_id.jpg
+[2026-10-02 01:00:56,018: INFO: app]: ID card ROI extracted.
+[2026-10-02 01:00:56,484: INFO: utils]: File doesn't exist for A:\CODES\PROJECTS\eKYC\data\intermediate\extracted_face.jpg
+[2026-10-02 01:00:56,485: INFO: preprocess]: Image saved successfully: A:\CODES\PROJECTS\eKYC\data\intermediate\extracted_face.jpg
+[2026-10-02 01:00:56,487: INFO: utils]: File doesn't exist for data\intermediate\face_image.jpg
+[2026-10-02 01:00:56,487: INFO: preprocess]: Image saved successfully: data\intermediate\face_image.jpg
+[2026-10-02 01:00:56,488: INFO: app]: Faces extracted and saved.
+[2026-10-02 01:00:56,488: INFO: utils]: File doesn't exist for A:\CODES\PROJECTS\eKYC\data\intermediate\extracted_face.jpg
+[2026-10-02 01:00:56,488: INFO: utils]: File doesn't exist for data\intermediate\face_image.jpg
+[2026-10-02 07:38:06,762: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 07:38:08,291: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 07:38:09,043: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 07:38:09,102: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 07:38:14,344: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 07:38:14,649: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 07:38:14,699: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 07:38:14,699: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 07:38:14,704: INFO: app]: ID card type selected: PAN
+[2026-10-02 07:38:14,705: INFO: app]: Header set for PAN Card registration.
+[2026-10-02 07:40:50,062: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 07:40:50,064: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 07:40:50,065: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 07:40:50,067: INFO: app]: ID card type selected:  
+[2026-10-02 07:40:53,788: INFO: utils]: yaml  file: config.yaml loaded successfully
+[2026-10-02 07:40:53,789: INFO: app]: Page layout set to wider configuration.
+[2026-10-02 07:40:53,789: INFO: app]: Custom theme applied to Streamlit app.
+[2026-10-02 07:40:53,790: INFO: app]: ID card type selected: PAN
+[2026-10-02 07:40:53,790: INFO: app]: Header set for PAN Card registration.

@@ -1,27 +1,28 @@
-import cv2
-import os
-import logging
-import streamlit as st
+from src.face_verification import detect_and_extract_face, face_comparison, get_face_embeddings
+from src.mysqldb_operations import insert_records, fetch_records, check_duplicacy
+from src.preprocess import read_image, extract_id_card, save_image, save_uploaded_file
+from src.postprocess import extract_information
+from src.ocr_engine import extract_text
+from src.utils import read_yaml
 from sqlalchemy import text
-from preprocess import read_image, extract_id_card, save_image
-from ocr_engine import extract_text
-from postprocess import extract_information
-from face_verification import detect_and_extract_face, face_comparison, get_face_embeddings
-from mysqldb_operations import insert_records, fetch_records, check_duplicacy
+import streamlit as st
+import cv2, logging, os
 
-# {
-#   "ID": "CCNPA",
-#   "Name": "BIBEK RAUTH",
-#   "Father's Name": "AJAY RAUTH",
-#   "DOB": "14/09/1994",
-#   "ID Type": "PAN"
-# }
+
+config = read_yaml("config.yaml")
+artifacts = config['artifacts']
+
+log_file_name = artifacts['LOG_FILE_NAME']
+log_dir = artifacts['LOG_DIR']
+
+face_img2_name = artifacts['FACE_IMG2_NAME']
+intermediate_dir_path = artifacts['INTERMIDEIATE_DIR']
 
 
 logging_str = "[%(asctime)s: %(levelname)s: %(module)s]: %(message)s"
-log_dir = "logs"
 os.makedirs(log_dir, exist_ok=True)
-logging.basicConfig(filename=os.path.join(log_dir,"ekyc_logs.log"), level=logging.INFO, format=logging_str, filemode="a")
+logging.basicConfig(filename=os.path.join(log_dir, log_file_name), level=logging.INFO, format=logging_str, filemode="a")
+
 
 # Set wider page layout
 def wider_page():
@@ -71,39 +72,73 @@ def header_section(option):
         logging.info("Header set for PAN Card registration.")
 
 # Main content
-def main_content(image_file, face_image_file, conn):
-    if image_file is not None:
-        face_image = read_image(face_image_file, is_uploaded=True)
+def main_content(document_file, face_image_file, conn):
+    if document_file is not None:
+        if face_image_file is None:
+            st.error("Please upload a face image.")
+            return
+
+        saved_face_path = save_uploaded_file(face_image_file, face_img2_name, intermediate_dir_path)
+        face_image = read_image(saved_face_path)
         logging.info("Face image loaded.")
         if face_image is not None:
-            image = read_image(image_file, is_uploaded=True)
+            saved_document_path = save_uploaded_file(document_file, "uploaded_id_card.jpg", intermediate_dir_path)
+            document_img = read_image(saved_document_path)
             logging.info("ID card image loaded.")
-            image_roi, _ = extract_id_card(image)
+            extracted_document = extract_id_card(document_img)
+            if extracted_document is None:
+                st.error("Could not detect the ID card in the uploaded image.")
+                return
+            document, _ = extracted_document
             logging.info("ID card ROI extracted.")
-            face_image_path2 = detect_and_extract_face(img=image_roi)
-            face_image_path1 = save_image(face_image, "face_image.jpg", path="data\\02_intermediate_data")
+            # It Detects, extracts and saves the face from the ID card image and return path.
+            face_image_path1 = detect_and_extract_face(img=document)
+            if face_image_path1 is None:
+                st.error("No face was detected on the ID card.")
+                return
+            face_image_path2 = saved_face_path
             logging.info("Faces extracted and saved.")
             is_face_verified = face_comparison(image1_path=face_image_path1, image2_path=face_image_path2)
             logging.info(f"Face verification status: {'successful' if is_face_verified else 'failed'}.")
 
             if is_face_verified:
-                extracted_text = extract_text(image_roi)
+                # Extracting the text only if the user is verified
+                extracted_text = extract_text(document)
                 text_info = extract_information(extracted_text)
                 logging.info("Text extracted and information parsed from ID card.")
                 records = fetch_records(text_info)
+                
                 if records.shape[0] > 0:
                     st.write(records.shape)
                     st.write(records)
+                
                 is_duplicate = check_duplicacy(text_info)
                 if is_duplicate:
                     st.write(f"User already present with ID {text_info['ID']}")
-                else: 
+                else:
                     st.write(text_info)
                     text_info['DOB'] = text_info['DOB'].strftime('%Y-%m-%d')
                     text_info['Embedding'] =  get_face_embeddings(face_image_path1)
                     insert_records(text_info)
                     logging.info(f"New user record inserted: {text_info['ID']}")
-                    
+
+                    col1, col2 = st.columns(2)
+
+                    # Display ID card image
+                    with col1:
+                        st.header("ID Card Image")
+                        document = cv2.cvtColor(document, cv2.COLOR_BGR2RGB)
+                        st.image(document, use_column_width=True, caption="ID card")
+
+                    # Display uploaded face image
+                    with col2:
+                        st.header("Uploaded Face Image")
+                        face_image = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
+                        st.image(face_image, use_column_width=True, caption="Uploaded Face")
+
+                    # Display extracted information
+                    st.header("Extracted Information")
+                    st.dataframe(records)
             else:
                 st.error("Face verification failed. Please try again.")
 
