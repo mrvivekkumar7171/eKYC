@@ -1,7 +1,7 @@
 from datetime import datetime
 from src.utils import read_yaml
 import pandas as pd
-import json, os, logging
+import json, os, logging, re
 
 
 config = read_yaml("config.yaml")
@@ -17,9 +17,8 @@ logging.basicConfig(filename=os.path.join(log_dir, log_file_name), level=logging
 
 
 def extract_information(data_string):
-    # Split the data string into a list of words based on "|"
-    updated_data_string = data_string.replace(".", "")
-    words = [word.strip() for word in updated_data_string.split("|") if len(word.strip()) > 2]
+    words = [word.strip() for word in data_string.split("|") if word.strip()]
+    normalized_words = [re.sub(r"[^a-z0-9]", "", word.lower()) for word in words]
 
     # Initialize the dictionary to store the extracted information
     extracted_info = {
@@ -30,30 +29,35 @@ def extract_information(data_string):
         "ID Type": "PAN"
     }
 
-    try:
-        name_index = words.index("GOVT OF INDIA") + 1
-        extracted_info["Name"] = words[name_index]
+    government_index = next(
+        (index for index, word in enumerate(normalized_words)
+         if word in {"govtofindia", "governmentofindia", "governmentonindia"}),
+        None,
+    )
+    if government_index is not None and government_index + 1 < len(words):
+        extracted_info["Name"] = words[government_index + 1]
+        if government_index + 2 < len(words):
+            possible_father = normalized_words[government_index + 2]
+            if possible_father not in {"dob", "male", "female"} and not re.fullmatch(r"\d+", possible_father):
+                extracted_info["Father's Name"] = words[government_index + 2]
 
-        fathers_name_index = name_index + 1
-        extracted_info["Father's Name"] = words[fathers_name_index]
-
-        id_number_index = words.index("Permanent Account Number") + 1
-        extracted_info["ID"] = words[id_number_index]
-
-        dob_index = None
-        for i, word in enumerate(words):
+    for word in words:
+        for date_format in ("%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y"):
             try:
-                datetime.strptime(word, "%d/%m/%Y")
-                dob_index = i
+                extracted_info["DOB"] = datetime.strptime(word, date_format)
                 break
             except ValueError:
                 continue
+        if extracted_info["DOB"]:
+            break
 
-        if dob_index is not None:
-            extracted_info["DOB"] = datetime.strptime(words[dob_index], "%d/%m/%Y")
-        else:
-            print("Error: Date of birth not found.")
-    except ValueError:
-        print("Error: Some required information is missing or incorrectly formatted.")
+    aadhaar_match = re.search(r"(?<!\d)(\d{4}\s*\d{4}\s*\d{4})(?!\d)", " ".join(words))
+    pan_match = re.search(r"[A-Z]{5}\d{4}[A-Z]", " ".join(words).upper())
+    if aadhaar_match:
+        extracted_info["ID"] = re.sub(r"\s+", "", aadhaar_match.group())
+        extracted_info["ID Type"] = "Aadhar"
+    elif pan_match:
+        extracted_info["ID"] = pan_match.group()
+        extracted_info["ID Type"] = "PAN"
 
     return extracted_info

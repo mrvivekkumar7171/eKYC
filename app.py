@@ -4,6 +4,7 @@ from src.preprocess import read_image, extract_id_card, save_image, save_uploade
 from src.postprocess import extract_information
 from src.ocr_engine import extract_text
 from src.utils import read_yaml
+from datetime import datetime
 from sqlalchemy import text
 import streamlit as st
 import cv2, logging, os
@@ -17,6 +18,7 @@ log_dir = artifacts['LOG_DIR']
 
 face_img2_name = artifacts['FACE_IMG2_NAME']
 intermediate_dir_path = artifacts['INTERMIDEIATE_DIR']
+uploaded_id_card_name = artifacts['UPLOADED_ID_CARD_NAME']
 
 
 logging_str = "[%(asctime)s: %(levelname)s: %(module)s]: %(message)s"
@@ -58,7 +60,7 @@ def set_custom_theme():
 # Sidebar
 def sidebar_section():
     st.sidebar.title("Select ID Card Type")
-    option = st.sidebar.selectbox("", ("PAN", " "))
+    option = st.sidebar.selectbox("", ("PAN", "Aadhar"))
     logging.info(f"ID card type selected: {option}")
     return option
 
@@ -82,7 +84,7 @@ def main_content(document_file, face_image_file, conn):
         face_image = read_image(saved_face_path)
         logging.info("Face image loaded.")
         if face_image is not None:
-            saved_document_path = save_uploaded_file(document_file, "uploaded_id_card.jpg", intermediate_dir_path)
+            saved_document_path = save_uploaded_file(document_file, uploaded_id_card_name, intermediate_dir_path)
             document_img = read_image(saved_document_path)
             logging.info("ID card image loaded.")
             extracted_document = extract_id_card(document_img)
@@ -106,11 +108,16 @@ def main_content(document_file, face_image_file, conn):
                 extracted_text = extract_text(document)
                 text_info = extract_information(extracted_text)
                 logging.info("Text extracted and information parsed from ID card.")
+
+                if not isinstance(text_info.get("DOB"), datetime):
+                    st.error("Could not extract a valid date of birth from the ID card. Please upload a clearer image.")
+                    logging.error("DOB was not extracted from the ID card OCR result.")
+                    return
+
                 records = fetch_records(text_info)
                 
                 if records.shape[0] > 0:
-                    st.write(records.shape)
-                    st.write(records)
+                    st.write(records.iloc[:,:-1])
                 
                 is_duplicate = check_duplicacy(text_info)
                 if is_duplicate:
@@ -128,13 +135,13 @@ def main_content(document_file, face_image_file, conn):
                     with col1:
                         st.header("ID Card Image")
                         document = cv2.cvtColor(document, cv2.COLOR_BGR2RGB)
-                        st.image(document, use_column_width=True, caption="ID card")
+                        st.image(document, caption="ID card")
 
                     # Display uploaded face image
                     with col2:
                         st.header("Uploaded Face Image")
                         face_image = cv2.cvtColor(face_image, cv2.COLOR_BGR2RGB)
-                        st.image(face_image, use_column_width=True, caption="Uploaded Face")
+                        st.image(face_image, caption="Uploaded Face")
 
                     # Display extracted information
                     st.header("Extracted Information")

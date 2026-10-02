@@ -14,9 +14,7 @@ log_dir = artifact_path(artifacts['LOG_DIR'])
 
 cascade_path = artifact_path(artifacts['HAARCASCADE_PATH'])
 output_path = artifact_path(artifacts['INTERMIDEIATE_DIR'])
-face_img1 = artifact_path(artifacts['FACE_IMG1'])
 face_img1_name = artifacts['FACE_IMG1_NAME']
-face_img2 = artifact_path(artifacts['FACE_IMG2'])
 
 parameters = config['parameters']
 scaleFactor = parameters['SCALE_FACTOR']
@@ -85,7 +83,7 @@ def detect_and_extract_face(img):
         return None
 
 
-def face_comparison(image1_path=face_img1, image2_path=face_img2):
+def face_comparison(image1_path, image2_path):
     """Compare two images using face_recognition library to verify if they contain the same face.
 
     Args:

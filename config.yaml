@@ -2,12 +2,11 @@ artifacts:
   FACERECOG_MODEL: deepface
   HAARCASCADE_PATH: "models\\haarcascade_frontalface_default.xml"
   INTERMIDEIATE_DIR: "data\\intermediate"
-  CONTOUR_FILE: "contour_id.jpg"
-  FACE_IMG1_NAME: "extracted_face.jpg"
-  FACE_IMG1: "data\\intermediate\\extracted_face.jpg"
-  FACE_IMG2_NAME: "face_image.jpg"
-  FACE_IMG2: "data\\intermediate\\face_image.jpg"
-  LOG_FILE_NAME: "ekyc_logs.log"
+  UPLOADED_ID_CARD_NAME: "uploaded_id_card.jpg"
+  FACE_IMG2_NAME: "uploaded_face_image.jpg"
+  CONTOUR_FILE: "cropped_id_card.jpg"
+  FACE_IMG1_NAME: "extracted_face_image.jpg"
+  LOG_FILE_NAME: "logs.log"
   LOG_DIR: "logs"
 parameters:
   GAUSSIAN_BLUR_KERNEL_SIZE: 5
