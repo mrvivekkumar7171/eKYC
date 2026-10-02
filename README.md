@@ -65,7 +65,7 @@ CREATE TABLE users (
     create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
     name VARCHAR(255),
     father_name VARCHAR(255),
-    dob DATETIME,
+    dob DATE,
     id_type VARCHAR(255) NOT NULL,
     embedding BLOB
 );

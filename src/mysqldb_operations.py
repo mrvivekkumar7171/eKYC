@@ -47,7 +47,6 @@ def insert_records(text_info):
 
 
 def fetch_records(text_info):
-    ##### We can also check for duplicacy of Aadhar number, pan number and image in ID card.
     """Fetches records from the database based on the provided text_info.
 
     Args:
@@ -63,19 +62,4 @@ def fetch_records(text_info):
     if result:
         return pd.DataFrame(result, columns=[desc[0] for desc in mycursor.description])
     else:
-        return pd.DataFrame() 
-
-
-def check_duplicacy(text_info):
-    """Checks if a record with the same ID already exists in the database.
-
-    Args:
-        text_info (dict): A dictionary containing the information of the user to check for duplicacy.
-
-    Returns:
-        bool: True if a duplicate record exists, False otherwise.
-    """
-    df =  fetch_records(text_info)
-    if df.shape[0]>0:
-        return True
-    return False
+        return pd.DataFrame()

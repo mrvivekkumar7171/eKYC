@@ -100,12 +100,12 @@ def main_content(id_image_file, face_image_file, conn, option):
 
 
     # It Detects, extracts and saves the face from the ID card image and return path.
-    extracted_face = detect_and_extract_face(img=id_card_document)
-    extracted_face_path = save_image(extracted_face, extracted_face_img_name, dir_path)
-    if extracted_face_path is None:
+    extracted_face = detect_and_extract_face(img=id_card_document, option=option)
+    if extracted_face is None:
         status.error("No face was detected on the ID card.")
         logging.info("No face was detected on the ID card.")
         return
+    extracted_face_path = save_image(extracted_face, extracted_face_img_name, dir_path)
     status.success("Face extracted from ID card successfully.")
     logging.info("Faces extracted and saved.")
 
@@ -117,9 +117,15 @@ def main_content(id_image_file, face_image_file, conn, option):
         status.success("Face verification successful. Proceeding with information extraction.")
 
 
-        # Extracting the information and embeddings  from the ID card if the user is verified
+        # Extracting the information from the ID card
         extracted_text = extract_text(id_card_document)
-        text_info = extract_information(extracted_text, option)
+        text_info = extract_information(extracted_text, option=option)
+        if not text_info:
+            status.error("Failed to extract valid information from the ID card.")
+            logging.info("Failed to extract valid information from the ID card.")
+            return
+
+        # Extracting embeddings from the ID card
         text_info['Embedding'] =  get_face_embeddings(extracted_face_path)
         logging.info("Text extracted and information parsed from ID card.")
 

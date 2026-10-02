@@ -5,13 +5,11 @@ import numpy as np
 
 config = read_yaml("config.yaml")
 artifacts = config['artifacts']
+parameters = config['parameters']
 
 log_file_name = artifacts['LOG_FILE_NAME']
 log_dir = artifact_path(artifacts['LOG_DIR'])
 
-conour_file_name = artifacts['CONTOUR_FILE']
-
-parameters = config['parameters']
 gaussian_blur_kernel_size = parameters['GAUSSIAN_BLUR_KERNEL_SIZE']
 adaptive_threshold_block_size = parameters['ADAPTIVE_THRESHOLD_BLOCK_SIZE']
 adaptive_threshold_c = parameters['ADAPTIVE_THRESHOLD_C']

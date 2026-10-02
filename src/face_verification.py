@@ -8,13 +8,12 @@ import numpy as np
 
 config = read_yaml("config.yaml")
 artifacts = config['artifacts']
+parameters = config['parameters']
 
 log_file_name = artifacts['LOG_FILE_NAME']
 log_dir = artifact_path(artifacts['LOG_DIR'])
-
 cascade_path = artifact_path(artifacts['HAARCASCADE_PATH'])
 
-parameters = config['parameters']
 scaleFactor = parameters['SCALE_FACTOR']
 minNeighbors = parameters['MIN_NEIGHBORS']
 increase_scale_factor = parameters['INCREASED_SCALE_FACTOR']
@@ -25,22 +24,15 @@ logging_str = "[%(asctime)s: %(levelname)s: %(module)s]: %(message)s"
 os.makedirs(log_dir, exist_ok=True)
 logging.basicConfig(filename=log_dir / log_file_name, level=logging.INFO, format=logging_str, filemode="a")
 
-
-def detect_and_extract_face(img):
-    """ Detect and Extract the largest face from an image.
-
-    Args:
-        img (numpy.ndarray): The input image.
-
-    Returns:
-        str: The path to the saved extracted face image, or None if no face is found.
-    """
+def _detect_and_extract_face(face_cascade, img, option, pan_version=1):
+    # Taking only right-bottom side for PAN card due to Mahatama Gandhi is taking as largest picture.
+    if option=="PAN" and pan_version==1:
+        img = img[img.shape[0]//2:, img.shape[1]//2:]
+    else:
+        img = img
 
     # Convert the image to grayscale (Haar cascade works better with grayscale images)
     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
-
-    # Load the Haar cascade classifier
-    face_cascade = cv2.CascadeClassifier(cascade_path)
 
     # Detect faces in the image
     faces = face_cascade.detectMultiScale(gray_img, scaleFactor=scaleFactor, minNeighbors=minNeighbors)
@@ -53,11 +45,27 @@ def detect_and_extract_face(img):
         if area > max_area:
             max_area = area
             largest_face = (x, y, w, h)
+    return largest_face
+
+def detect_and_extract_face(img, option):
+    """ Detect and Extract the largest face from an image.
+
+    Args:
+        img (numpy.ndarray): The input image.
+
+    Returns:
+        str: The path to the saved extracted face image, or None if no face is found.
+    """
+    # Load the Haar cascade classifier
+    face_cascade = cv2.CascadeClassifier(cascade_path)
+
+    largest_face = _detect_and_extract_face(face_cascade, img, option)
+    if largest_face is None and option == "PAN":
+        largest_face = _detect_and_extract_face(face_cascade, img, option, pan_version=2)
 
     # Extract the largest face
     if largest_face is not None:
         (x, y, w, h) = largest_face
-        # extracted_face = img[y:y+h, x:x+w]
         
         # Increase dimensions by X %
         new_w = int(w * increase_scale_factor)
@@ -70,8 +78,6 @@ def detect_and_extract_face(img):
         # Extract the enlarged face
         extracted_face = img[new_y:new_y+new_h, new_x:new_x+new_w]
 
-        # Convert the extracted face to RGB
-        # extracted_face_rgb = cv2.cvtColor(extracted_face, cv2.COLOR_BGR2RGB)
         return extracted_face
     else:
         return None
@@ -148,5 +154,5 @@ if __name__ == "__main__":
     id_card = "data\\docs\\pan_2.jpg"
     face_path = "data\\faces\\extracted_face.jpg"
     id_card = cv2.imread(id_card)
-    extracted_face_path = detect_and_extract_face(image_path=id_card)
+    extracted_face_path = detect_and_extract_face(image_path=id_card, option="PAN")
     face_comparison(extracted_face_path, face_path)
