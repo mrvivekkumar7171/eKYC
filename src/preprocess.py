@@ -66,6 +66,15 @@ def extract_id_card(img):
         str: The filename of the saved image, or None if the image is not saved.
     """
 
+    card, _ = extract_id_card_with_bbox(img)
+    return card
+
+
+def extract_id_card_with_bbox(img):
+    """Extract the ID card and return its box relative to the source image."""
+    if img is None:
+        return None, None
+
     # Convert image to grayscale
     gray_img = cv2.cvtColor(img, cv2.COLOR_BGR2GRAY)
 
@@ -96,7 +105,7 @@ def extract_id_card(img):
 
     # If no large contour is found, assume no ID card is present
     if largest_contour is None:
-        return None
+        return None, None
 
     # Get bounding rectangle of the largest contour
     x, y, w, h = cv2.boundingRect(largest_contour)
@@ -108,7 +117,30 @@ def extract_id_card(img):
     # - Apply bilateral filtering for noise reduction
     # filtered_img = cv2.bilateralFiltering(img[y:y+h, x:x+w], 9, 75, 75)
     # - Morphological operations (e.g., erosion, dilation) for shape refinement
-    return img[y:y+h, x:x+w]
+    return img[y:y+h, x:x+w], (x, y, w, h)
+
+
+def crop_from_document(document_img, x, y, width, height):
+    """Recreate a derived crop from an original document image in memory."""
+    if document_img is None or any(value is None for value in (x, y, width, height)):
+        return None
+
+    image_height, image_width = document_img.shape[:2]
+    x = max(0, min(int(x), image_width))
+    y = max(0, min(int(y), image_height))
+    right = max(x, min(x + int(width), image_width))
+    bottom = max(y, min(y + int(height), image_height))
+    if right <= x or bottom <= y:
+        return None
+    return document_img[y:bottom, x:right]
+
+
+def crop_id_card_from_document(document_img, x, y, width, height):
+    return crop_from_document(document_img, x, y, width, height)
+
+
+def crop_face_from_document(document_img, x, y, width, height):
+    return crop_from_document(document_img, x, y, width, height)
 
 
 def save_image(image, filename, path):

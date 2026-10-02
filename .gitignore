@@ -17,3 +17,4 @@ logs/
 data/tessdata/
 __pycache__/
 *.pyc
+data/intermediate/*

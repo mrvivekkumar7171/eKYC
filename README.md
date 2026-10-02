@@ -1,7 +1,12 @@
 ### eKYC (Electronic Know Your Customer)
-User uploads an image of their ID card and a selfie. The system extracts the text from the ID card and compares the face in the ID card with the selfie to verify the identity of the user. If the user exists in the database, the system will return the user's details. If not, the system will add the user to the database. The application is built using Streamlit.
+User uploads an image of their ID card and a selfie. The system extracts the text from the ID card and compares the face in the ID card with the selfie to verify the identity of the user. If the user exists in the database, the system will return the user's details. If not, the system will add the user to the database. The application is built using Streamlit. It works both different version of Aadhaar and PAN cards, reject masked, foreign and low-quality images. Update image, embedding and extracted id card data into the database if the user don't exist in the database.
 
-![alt text](data/raw_data/image.png)
+![alt text](data/img/image2.png)
+![alt text](data/img/image3.png)
+![alt text](data/img/image4.png)
+![alt text](data/img/image1.png)
+![alt text](data/img/image5.png)
+![alt text](data/img/image.png)
 
 1. **Image Preprocessing**:
     - **GrayScale Conversion**: to remove color information and reduce the complexity of the image.
@@ -15,10 +20,6 @@ User uploads an image of their ID card and a selfie. The system extracts the tex
 
 
 ## Features to be added:
-Crop the ID card if the ID card seleted is Pan Card as It contain Mahatma Gandhi's image which is bigger than the actual face of the user and can be seleted as the largest face in the image instead of the user's face.
-Duplicacy Check:
-- No duplicate ID cards.
-- Face Embedding already exists or not.
 Liveness Check:
 - Using Motion Detection to check if the user is live or not.
 - Eye Blink Detection to check if the user is live or not.
@@ -54,24 +55,11 @@ pip install opencv-python-headless==4.10.0.84
 > 2. Do not install the normal `dlib` package.
 > 3. `face_recognition` is installed with `--no-deps` because it tries to install/build normal `dlib`.
 
-### 4. Created a database and table in MySQL
-```sql
-CREATE DATABASE ekyc;
-
-USE ekyc;
-
-CREATE TABLE users (
-    id VARCHAR(255) NOT NULL PRIMARY KEY,
-    create_time DATETIME DEFAULT CURRENT_TIMESTAMP,
-    name VARCHAR(255),
-    father_name VARCHAR(255),
-    dob DATE,
-    id_type VARCHAR(255) NOT NULL,
-    embedding BLOB
-);
-
-SHOW TABLES;
-```
+### 4. Create the MySQL schema
+Run the complete migration in `schema.sql` using MySQL Workbench. It creates
+`verification_images` for both original uploads, coordinates, statuses, and
+embeddings, plus `user`, which links to one verification attempt through
+`document_image_id`.
 
 ### 5. Run the Streamlit App
 > Make sure SQL server is running before running the streamlit app

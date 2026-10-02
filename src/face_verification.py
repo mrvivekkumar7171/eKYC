@@ -56,12 +56,24 @@ def detect_and_extract_face(img, option):
     Returns:
         str: The path to the saved extracted face image, or None if no face is found.
     """
+    extracted_face, _ = detect_and_extract_face_with_bbox(img, option)
+    return extracted_face
+
+
+def detect_and_extract_face_with_bbox(img, option):
+    """Return the enlarged face crop and its box relative to ``img``."""
     # Load the Haar cascade classifier
     face_cascade = cv2.CascadeClassifier(cascade_path)
 
     largest_face = _detect_and_extract_face(face_cascade, img, option)
+    offset_x = img.shape[1] // 2 if option == "PAN" else 0
+    offset_y = img.shape[0] // 2 if option == "PAN" else 0
+    search_img = img[offset_y:, offset_x:] if option == "PAN" else img
     if largest_face is None and option == "PAN":
         largest_face = _detect_and_extract_face(face_cascade, img, option, pan_version=2)
+        offset_x = 0
+        offset_y = 0
+        search_img = img
 
     # Extract the largest face
     if largest_face is not None:
@@ -76,11 +88,13 @@ def detect_and_extract_face(img, option):
         new_y = max(0, y - int((new_h - h) / 2))
 
         # Extract the enlarged face
-        extracted_face = img[new_y:new_y+new_h, new_x:new_x+new_w]
+        # For PAN version 1, crop from the same lower-right region used for
+        # detection; the stored box is translated back to document coordinates.
+        extracted_face = search_img[new_y:new_y+new_h, new_x:new_x+new_w]
 
-        return extracted_face
+        return extracted_face, (new_x + offset_x, new_y + offset_y, new_w, new_h)
     else:
-        return None
+        return None, None
 
 
 def face_comparison(image1_path, image2_path):
