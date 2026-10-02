@@ -15,6 +15,7 @@ User uploads an image of their ID card and a selfie. The system extracts the tex
 
 
 ## Features to be added:
+Crop the ID card if the ID card seleted is Pan Card as It contain Mahatma Gandhi's image which is bigger than the actual face of the user and can be seleted as the largest face in the image instead of the user's face.
 Duplicacy Check:
 - No duplicate ID cards.
 - Face Embedding already exists or not.

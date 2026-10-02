@@ -18,18 +18,6 @@ os.makedirs(log_dir, exist_ok=True)
 logging.basicConfig(filename=os.path.join(log_dir, log_file_name), level=logging.INFO, format=logging_str, filemode="a")
 
 
-# To create a table in MySQL
-# CREATE TABLE users(  
-#     id VARCHAR(255) NOT NULL PRIMARY KEY,
-#     create_time DATETIME COMMENT 'Create Time',
-#     name VARCHAR(255),
-#     father_name VARCHAR(255),
-#     dob DATETIME,
-#     id_type VARCHAR(255) NOT NULL,
-#     embedding BLOB
-# )
-
-
 # Establish a connection to MySQL Server
 mydb = mysql.connector.connect(
     host=os.getenv("DATABASE_URL"),
@@ -38,7 +26,7 @@ mydb = mysql.connector.connect(
     database=os.getenv("DATABASE_NAME")
 )
 mycursor=mydb.cursor()
-print("Connection Established")
+logging.info("Connection Established with the database")
 
 
 def insert_records(text_info):
@@ -59,6 +47,7 @@ def insert_records(text_info):
 
 
 def fetch_records(text_info):
+    ##### We can also check for duplicacy of Aadhar number, pan number and image in ID card.
     """Fetches records from the database based on the provided text_info.
 
     Args:

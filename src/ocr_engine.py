@@ -46,7 +46,6 @@ def extract_text(image_path, confidence_threshold=0.3, languages=['en']):
 
         return filtered_text 
     except Exception as e:
-        print("An error occurred during text extraction:", e)
         logging.info(f"An error occurred during text extraction: {e}")
         return ""
     finally:

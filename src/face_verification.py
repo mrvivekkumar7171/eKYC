@@ -13,8 +13,6 @@ log_file_name = artifacts['LOG_FILE_NAME']
 log_dir = artifact_path(artifacts['LOG_DIR'])
 
 cascade_path = artifact_path(artifacts['HAARCASCADE_PATH'])
-output_path = artifact_path(artifacts['INTERMIDEIATE_DIR'])
-face_img1_name = artifacts['FACE_IMG1_NAME']
 
 parameters = config['parameters']
 scaleFactor = parameters['SCALE_FACTOR']
@@ -74,11 +72,7 @@ def detect_and_extract_face(img):
 
         # Convert the extracted face to RGB
         # extracted_face_rgb = cv2.cvtColor(extracted_face, cv2.COLOR_BGR2RGB)
-        
-        filename = save_image(extracted_face, face_img1_name, output_path)
-
-        print(f"Extracted face saved at: {filename}")
-        return filename
+        return extracted_face
     else:
         return None
 
@@ -98,7 +92,7 @@ def face_comparison(image1_path, image2_path):
     img2_exists = file_exists(image2_path)
 
     if not img1_exists or not img2_exists:
-        print("Check the path for the images provided")
+        logging.info("Check the path for the images provided")
         return False
 
     image1 = face_recognition.load_image_file(image1_path)
@@ -109,22 +103,19 @@ def face_comparison(image1_path, image2_path):
         face_encodings2 = face_recognition.face_encodings(image2)
 
     else:
-        print("Image is not loaded properly")
+        logging.info("Image is not loaded properly")
         return False
 
     # Check if faces are detected in both images
     if len(face_encodings1) == 0 or len(face_encodings2) == 0:
-        print("No faces detected in one or both images.")
+        logging.info("No faces detected in one or both images.")
         return False
     else:
     # Proceed with comparing faces if faces are detected
         matches = face_recognition.compare_faces(face_encodings1, face_encodings2[0])
-    # Print the results
     if any(matches):
-        print("Faces are verified")
         return True
     else:
-        print("The faces are not similar.")
         return False
 
 
@@ -141,7 +132,7 @@ def get_face_embeddings(image_path):
     img_exists = file_exists(image_path)
 
     if not img_exists:
-        print("Check the path for the images provided")
+        logging.info("Check the path for the images provided")
         return None
     
     embedding_objs = DeepFace.represent(img_path=image_path, model_name=deepface_model)

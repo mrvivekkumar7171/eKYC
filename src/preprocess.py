@@ -9,7 +9,6 @@ artifacts = config['artifacts']
 log_file_name = artifacts['LOG_FILE_NAME']
 log_dir = artifact_path(artifacts['LOG_DIR'])
 
-intermediate_dir_path = artifact_path(artifacts['INTERMIDEIATE_DIR'])
 conour_file_name = artifacts['CONTOUR_FILE']
 
 parameters = config['parameters']
@@ -44,7 +43,6 @@ def read_image(image_path, is_uploaded=False):
             return img
         except Exception as e:
             logging.info(f"Error reading image: {e}")
-            print("Error reading image:", e)
             return None
     else:
         try:
@@ -55,7 +53,6 @@ def read_image(image_path, is_uploaded=False):
             return img
         except Exception as e:
             logging.info(f"Error reading image: {e}")
-            print("Error reading image:", e)
             return None
 
 
@@ -113,33 +110,33 @@ def extract_id_card(img):
     # - Apply bilateral filtering for noise reduction
     # filtered_img = cv2.bilateralFiltering(img[y:y+h, x:x+w], 9, 75, 75)
     # - Morphological operations (e.g., erosion, dilation) for shape refinement
-    contour_id = img[y:y+h, x:x+w]
-
-    filename = save_image(contour_id, conour_file_name, intermediate_dir_path)
-
-    return contour_id, filename
+    return img[y:y+h, x:x+w]
 
 
-def save_image(image, filename, path="."):
+def save_image(image, filename, path):
     """Save an OpenCV image and return its full path."""
     os.makedirs(path, exist_ok=True)
     full_path = os.path.join(path, filename)
+    
     if file_exists(full_path):
           os.remove(full_path)
+    
     if not cv2.imwrite(full_path, image):
           raise IOError(f"Could not save image to {full_path}")
     logging.info(f"Image saved successfully: {full_path}")
     return full_path
 
 
-def save_uploaded_file(uploaded_file, filename, path=intermediate_dir_path):
-  """Persist a Streamlit upload and return its project-local path."""
-  if uploaded_file is None:
-      return None
+def save_uploaded_file(uploaded_file, filename, path):
+    """Persist a Streamlit upload and return its project-local path."""
+    if uploaded_file is None:
+        return None
 
-  os.makedirs(path, exist_ok=True)
-  full_path = os.path.join(path, filename)
-  with open(full_path, "wb") as output_file:
-      output_file.write(uploaded_file.getvalue())
-  logging.info(f"Uploaded file saved successfully: {full_path}")
-  return full_path
+    os.makedirs(path, exist_ok=True)
+    full_path = os.path.join(path, filename)
+    
+    with open(full_path, "wb") as output_file:
+        output_file.write(uploaded_file.getvalue())
+    
+    logging.info(f"Uploaded file saved successfully: {full_path}")
+    return full_path

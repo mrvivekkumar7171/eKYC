@@ -16,7 +16,8 @@ os.makedirs(log_dir, exist_ok=True)
 logging.basicConfig(filename=os.path.join(log_dir, log_file_name), level=logging.INFO, format=logging_str, filemode="a")
 
 
-def extract_information(data_string):
+def extract_information(data_string, option):
+    ###### add option parameter to the ID Type in the extracted_info dictionary
     words = [word.strip() for word in data_string.split("|") if word.strip()]
     normalized_words = [re.sub(r"[^a-z0-9]", "", word.lower()) for word in words]
 
@@ -44,7 +45,7 @@ def extract_information(data_string):
     for word in words:
         for date_format in ("%d/%m/%Y", "%d-%m-%Y", "%d.%m.%Y"):
             try:
-                extracted_info["DOB"] = datetime.strptime(word, date_format)
+                extracted_info["DOB"] = datetime.strptime(word, date_format).strftime('%Y-%m-%d')
                 break
             except ValueError:
                 continue
